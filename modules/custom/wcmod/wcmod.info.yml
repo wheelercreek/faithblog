@@ -1,0 +1,12 @@
+name: WC Custom Module
+description: Custom module for learning
+package: Custom
+core: 8.x
+
+type: module
+hidden: false
+
+# dependencies: 
+#  - devel
+#  - webform
+# these must be 2 spaces and a dash.  (no tabs). 

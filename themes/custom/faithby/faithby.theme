@@ -1,0 +1,29 @@
+<?php
+function faithby_preprocess_html(&$vars) { 
+  if (!empty($vars['node_type'])) {
+    $vars['attributes']['class'][] = 'node-'.$vars['node_type'];
+  }
+}
+
+function faithby_preprocess_page(&$vars) { 
+    
+}
+
+
+function faithby_preprocess_region(&$vars) { 
+    if($vars['region'] == 'header') { 
+       //nothing
+    }
+}
+
+function faithby_preprocess_block(&$vars) { 
+    
+}
+
+function faithby_preprocess_menu(&$vars) { 
+    
+}
+
+function faithby_preprocess_field(&$vars) { 
+    
+}

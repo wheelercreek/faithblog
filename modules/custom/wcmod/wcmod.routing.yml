@@ -1,0 +1,7 @@
+wcmod.content:
+  path: '/hello'
+  defaults:
+    _controller: '\Drupal\wcmod\Controller\WcmodController::content'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'
