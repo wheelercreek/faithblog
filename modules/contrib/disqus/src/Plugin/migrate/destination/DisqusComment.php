@@ -1,16 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\disqus\Plugin\migrate\destination\DisqusComment.
- */
-
 namespace Drupal\disqus\Plugin\migrate\destination;
 
 use Drupal\migrate\Plugin\migrate\destination\DestinationBase;
 use Drupal\migrate\Entity\MigrationInterface;
+use Drupal\migrate\Row;
 use Psr\Log\LoggerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Disqus comment destination.
@@ -60,8 +57,12 @@ class DisqusComment extends DestinationBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
     return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
       $container->get('logger.factory')->get('disqus'),
       $container->get('config.factory')
     );
@@ -100,18 +101,31 @@ class DisqusComment extends DestinationBase {
     $disqus = disqus_api();
     if ($disqus) {
       try {
-        $thread = $disqus->threads->details(array('forum' => $this->config->get('disqus_domain'), 'thread:ident' => $identifier, 'thread' => '1'));
+        $thread = $disqus->threads->details(
+          array(
+            'forum' => $this->config->get('disqus_domain'),
+            'thread:ident' => $identifier,
+            'thread' => '1',
+          )
+        );
       }
-      catch (Exception $exception) {
-        $this->logger->error('Error loading thread details for entity : !identifier. Check your API keys.', array('!identifier' => $identifier));
-        $thread = null;
+      catch (\Exception $exception) {
+        $this->logger->error('Error loading thread details for entity : @identifier. Check your API keys.', array('@identifier' => $identifier));
+        $thread = NULL;
       }
       if (!isset($thread->id)) {
         try {
-          $thread = $disqus->threads->create(array('forum' =>  $this->config->get('disqus_domain'), 'access_token' => $this->config->get('advanced.disqus_useraccesstoken'), 'title' => $row->getDestinationProperty('title'),  'identifier' => $identifier));
+          $thread = $disqus->threads->create(
+            array(
+              'forum' => $this->config->get('disqus_domain'),
+              'access_token' => $this->config->get('advanced.disqus_useraccesstoken'),
+              'title' => $row->getDestinationProperty('title'),
+              'identifier' => $identifier,
+            )
+          );
         }
-        catch (Exception $exception) {
-          $this->logger->error('Error creating thread for entity : !identifier. Check your user access token.', array('!identifier' => $identifier));
+        catch (\Exception $exception) {
+          $this->logger->error('Error creating thread for entity : @identifier. Check your user access token.', array('@identifier' => $identifier));
         }
       }
       try {
@@ -122,7 +136,7 @@ class DisqusComment extends DestinationBase {
         $date = $row->getDestinationProperty('author_url');
         $ip_address = $row->getDestinationProperty('ip_address');
         if (empty($author_name) || empty($author_email)) {
-          // post comment as created by site's moderator
+          // Post comment as created by site's moderator.
           $disqus->posts->create(array(
             'message' => $message,
             'thread' => $thread->id,
@@ -132,25 +146,25 @@ class DisqusComment extends DestinationBase {
           ));
         }
         else {
-          //cannot create comment as anonymous user, needs 'api_key' (api_key is not the public key)
+          // Cannot create comment as anonymous user, needs 'api_key'
+          // (api_key is not the public key).
           $disqus->posts->create(array(
             'thread' => $thread,
             'message' => $message,
             'author_name' => $author_name,
             'author_email' => $author_email,
             'author_url' => $author_url,
-            'date' =>  $date,
+            'date' => $date,
             'ip_address' => $ip_address,
           ));
         }
         return TRUE;
       }
-      catch (Exception $exception) {
-        $this->logger->error('Error creating post on thread !thread.', array('!thread' => $thread->id));
+      catch (\Exception $exception) {
+        $this->logger->error('Error creating post on thread @thread.', array('@thread' => $thread->id));
       }
       return FALSE;
     }
   }
 
 }
-

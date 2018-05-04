@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Component\Gettext\PoStreamWriter.
- */
-
 namespace Drupal\Component\Gettext;
 
 /**
@@ -86,7 +81,7 @@ class PoStreamWriter implements PoWriterInterface, PoStreamInterface {
   /**
    * Implements Drupal\Component\Gettext\PoStreamInterface::close().
    *
-   * @throws Exception
+   * @throws \Exception
    *   If the stream is not open.
    */
   public function close() {
@@ -94,7 +89,7 @@ class PoStreamWriter implements PoWriterInterface, PoStreamInterface {
       fclose($this->_fd);
     }
     else {
-      throw new Exception('Cannot close stream that is not open.');
+      throw new \Exception('Cannot close stream that is not open.');
     }
   }
 
@@ -105,13 +100,13 @@ class PoStreamWriter implements PoWriterInterface, PoStreamInterface {
    *   Piece of string to write to the stream. If the value is not directly a
    *   string, casting will happen in writing.
    *
-   * @throws Exception
+   * @throws \Exception
    *   If writing the data is not possible.
    */
   private function write($data) {
-    $result = fputs($this->_fd, $data);
-    if ($result === FALSE) {
-      throw new Exception('Unable to write data: ' . substr($data, 0, 20));
+    $result = fwrite($this->_fd, $data);
+    if ($result === FALSE || $result != strlen($data)) {
+      throw new \Exception('Unable to write data: ' . substr($data, 0, 20));
     }
   }
 
@@ -142,12 +137,12 @@ class PoStreamWriter implements PoWriterInterface, PoStreamInterface {
   /**
    * Implements Drupal\Component\Gettext\PoStreamInterface::getURI().
    *
-   * @throws Exception
+   * @throws \Exception
    *   If the URI is not set.
    */
   public function getURI() {
     if (empty($this->_uri)) {
-      throw new Exception('No URI set.');
+      throw new \Exception('No URI set.');
     }
     return $this->_uri;
   }

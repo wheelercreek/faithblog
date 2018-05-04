@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\disqus\Plugin\Field\FieldFormatter\DisqusFormatter.
- */
-
 namespace Drupal\disqus\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;
@@ -76,17 +71,25 @@ class DisqusFormatter extends FormatterBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $element = array();
+    $element = [];
 
-    if($items->status == 1 && $this->currentUser->hasPermission('view disqus comments')) {
-      $element[] = array(
-        '#lazy_builder' => ['\Drupal\disqus\Element\Disqus::disqus_element_post_render_cache', [
-          $items->getEntity()->getEntityTypeId(),
-          $items->getEntity()->id(),
-        ]],
-        '#create_placeholder' => TRUE,
-      );
+    // As the Field API only applies the "field default value" to newly created
+    // entities, we'll apply the default value for existing entities.
+    if ($items->count() == 0) {
+      $field_default_value = $items->getFieldDefinition()->getDefaultValue($items->getEntity());
+      $items->status = $field_default_value[0]['status'];
     }
+
+    if ($items->status == 1 && $this->currentUser->hasPermission('view disqus comments')) {
+      $element[] = [
+        '#type' => 'disqus',
+        '#url' => $items->getEntity()->toUrl('canonical', ['absolute' => TRUE])->toString(),
+        '#title' => (string) $items->getEntity()->label(),
+        '#identifier' => $items->identifier ?: "{$items->getEntity()->getEntityTypeId()}/{$items->getEntity()->id()}",
+      ];
+    }
+
     return $element;
   }
+
 }

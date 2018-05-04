@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\form_test\Form\FormTestGetForm.
- */
-
 namespace Drupal\form_test\Form;
 
 use Drupal\Core\Form\FormBase;
@@ -12,6 +7,8 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Form to test whether GET forms have a CSRF token.
+ *
+ * @internal
  */
 class FormTestGetForm extends FormBase {
 

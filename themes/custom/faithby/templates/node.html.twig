@@ -79,8 +79,7 @@
 
   {% if display_submitted %}
       {{ author_picture }}
-      <div{{ author_attributes }}>
-        {% trans %}By {{ author_name }} on {{ date }}{% endtrans %}
+      <div class="date_posted">{{ date }}
         {{ metadata }}
       </div>
   {% endif %}

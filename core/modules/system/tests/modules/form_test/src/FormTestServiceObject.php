@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\form_test\FormTestServiceObject.
- */
-
 namespace Drupal\form_test;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -12,6 +7,8 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a test form object.
+ *
+ * @internal
  */
 class FormTestServiceObject extends ConfigFormBase {
 
@@ -33,19 +30,19 @@ class FormTestServiceObject extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['element'] = array('#markup' => 'The FormTestServiceObject::buildForm() method was used for this form.');
+    $form['element'] = ['#markup' => 'The FormTestServiceObject::buildForm() method was used for this form.'];
 
-    $form['bananas'] = array(
+    $form['bananas'] = [
       '#type' => 'textfield',
       '#default_value' => 'brown',
       '#title' => $this->t('Bananas'),
-    );
+    ];
 
     $form['actions']['#type'] = 'actions';
-    $form['actions']['submit'] = array(
+    $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save'),
-    );
+    ];
     return $form;
   }
 

@@ -1,15 +1,15 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\block_test\Form\FavoriteAnimalTestForm.
- */
-
 namespace Drupal\block_test\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ * Form that performs favorite animal test.
+ *
+ * @internal
+ */
 class FavoriteAnimalTestForm extends FormBase {
 
   /**

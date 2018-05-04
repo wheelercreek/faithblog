@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search\Form\ReindexConfirm.
- */
-
 namespace Drupal\search\Form;
 
 use Drupal\Core\Form\ConfirmFormBase;
@@ -13,6 +8,8 @@ use Drupal\Core\Url;
 
 /**
  * Provides the search reindex confirmation form.
+ *
+ * @internal
  */
 class ReindexConfirm extends ConfirmFormBase {
 
@@ -72,4 +69,5 @@ class ReindexConfirm extends ConfirmFormBase {
       $form_state->setRedirectUrl($this->getCancelUrl());
     }
   }
+
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\form_test\ConfirmFormTestForm.
- */
-
 namespace Drupal\form_test;
 
 use Drupal\Core\Form\ConfirmFormBase;
@@ -13,6 +8,8 @@ use Drupal\Core\Url;
 
 /**
  * Provides a test confirmation form.
+ *
+ * @internal
  */
 class ConfirmFormTestForm extends ConfirmFormBase {
 
@@ -62,7 +59,7 @@ class ConfirmFormTestForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['element'] = array('#markup' => '<p>The ConfirmFormTestForm::buildForm() method was used for this form.</p>');
+    $form['element'] = ['#markup' => '<p>The ConfirmFormTestForm::buildForm() method was used for this form.</p>'];
 
     return parent::buildForm($form, $form_state);
   }

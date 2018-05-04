@@ -1,22 +1,19 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\node\Form\DeleteMultiple.
- */
-
 namespace Drupal\node\Form;
 
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\user\PrivateTempStoreFactory;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides a node deletion confirmation form.
+ *
+ * @internal
  */
 class DeleteMultiple extends ConfirmFormBase {
 
@@ -25,12 +22,12 @@ class DeleteMultiple extends ConfirmFormBase {
    *
    * @var string[][]
    */
-  protected $nodeInfo = array();
+  protected $nodeInfo = [];
 
   /**
    * The tempstore factory.
    *
-   * @var \Drupal\user\PrivateTempStoreFactory
+   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
   protected $tempStoreFactory;
 
@@ -39,12 +36,12 @@ class DeleteMultiple extends ConfirmFormBase {
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $manager;
+  protected $storage;
 
   /**
    * Constructs a DeleteMultiple form object.
    *
-   * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
    * @param \Drupal\Core\Entity\EntityManagerInterface $manager
    *   The entity manager.
@@ -59,7 +56,7 @@ class DeleteMultiple extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('user.private_tempstore'),
+      $container->get('tempstore.private'),
       $container->get('entity.manager')
     );
   }
@@ -135,10 +132,10 @@ class DeleteMultiple extends ConfirmFormBase {
       }
     }
 
-    $form['nodes'] = array(
+    $form['nodes'] = [
       '#theme' => 'item_list',
       '#items' => $items,
-    );
+    ];
     $form = parent::buildForm($form, $form_state);
 
     return $form;
@@ -172,7 +169,7 @@ class DeleteMultiple extends ConfirmFormBase {
 
       if ($delete_nodes) {
         $this->storage->delete($delete_nodes);
-        $this->logger('content')->notice('Deleted @count posts.', array('@count' => count($delete_nodes)));
+        $this->logger('content')->notice('Deleted @count posts.', ['@count' => count($delete_nodes)]);
       }
 
       if ($delete_translations) {
@@ -187,7 +184,7 @@ class DeleteMultiple extends ConfirmFormBase {
         }
         if ($count) {
           $total_count += $count;
-          $this->logger('content')->notice('Deleted @count content translations.', array('@count' => $count));
+          $this->logger('content')->notice('Deleted @count content translations.', ['@count' => $count]);
         }
       }
 

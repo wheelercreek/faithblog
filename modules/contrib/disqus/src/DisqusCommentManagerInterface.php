@@ -1,14 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\disqus\DisqusCommentManagerInterface.
- */
-
 namespace Drupal\disqus;
 
 /**
- * Disqus comment manager contains common functions to manage disqus_comment fields.
+ * It contains common functions to manage disqus_comment fields.
  */
 interface DisqusCommentManagerInterface {
 
@@ -19,16 +14,19 @@ interface DisqusCommentManagerInterface {
    *   The content entity type to which the disqus_comment fields are attached.
    *
    * @return array
-   *   An array of disqus_comment field map definitions, keyed by field name.
+   *   An array of disqu...www/html/d8/modules/disqus/src
+   *   /DisqusCommentManagerInterface.phps_comment field map definitions, keyed
+   *   by field name.
    *   Each value is an array with two entries:
    *   - type: The field type.
-   *   - bundles: The bundles in which the field appears, as an array with entity
-   *     types as keys and the array of bundle names as values.
+   *   - bundles: The bundles in which field appears, as an array with entity
+   *     types as keys and ...www/html/d8/modules/disqus/src
+   *   /DisqusCommentManagerInterface.phpthe array of bundle names as values.
    *
    * @see \Drupal\Core\Entity\EntityManagerInterface::getFieldMap()
    */
   public function getFields($entity_type_id);
-  
+
   /**
    * Utility function to return all disqus_comment fields.
    */
@@ -41,23 +39,8 @@ interface DisqusCommentManagerInterface {
    * actual usage.
    *
    * @return array
+   *   An array of the ssoSettings.
    */
-  public function disqus_sso_disqus_settings();
-
-  /**
-   * Assembles the full private key for use in SSO authentication.
-   *
-   * @param array $data
-   *
-   * @return string
-   */
-  public function disqus_sso_key_encode($data);
-
-  /**
-   * Assembles user-specific data used by Disqus SSO.
-   *
-   * @return array
-   */
-  public function disqus_sso_user_data();
+  public function ssoSettings();
 
 }

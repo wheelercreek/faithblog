@@ -9,13 +9,13 @@ class SessionCookieJar extends CookieJar
     /** @var string session key */
     private $sessionKey;
     
-    /** @var bool Control whether to presist session cookies or not. */
+    /** @var bool Control whether to persist session cookies or not. */
     private $storeSessionCookies;
 
     /**
      * Create a new SessionCookieJar object
      *
-     * @param string $sessionKey        Session key name to store the cookie 
+     * @param string $sessionKey        Session key name to store the cookie
      *                                  data in session
      * @param bool $storeSessionCookies Set to true to store session cookies
      *                                  in the cookie jar.
@@ -56,11 +56,10 @@ class SessionCookieJar extends CookieJar
      */
     protected function load()
     {
-        $cookieJar = isset($_SESSION[$this->sessionKey])
-            ? $_SESSION[$this->sessionKey]
-            : null;
-
-        $data = json_decode($cookieJar, true);
+        if (!isset($_SESSION[$this->sessionKey])) {
+            return;
+        }
+        $data = json_decode($_SESSION[$this->sessionKey], true);
         if (is_array($data)) {
             foreach ($data as $cookie) {
                 $this->setCookie(new SetCookie($cookie));
