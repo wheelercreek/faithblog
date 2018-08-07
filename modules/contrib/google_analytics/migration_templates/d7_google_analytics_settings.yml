@@ -2,10 +2,12 @@ id: d7_google_analytics_settings
 label: Google Analytics 7 configuration
 migration_tags:
   - Drupal 7
+  - Configuration
 source:
   plugin: variable
   variables:
     - googleanalytics_account
+    - googleanalytics_premium
     - googleanalytics_cache
     - googleanalytics_codesnippet_after
     - googleanalytics_codesnippet_before
@@ -33,8 +35,10 @@ source:
     - googleanalytics_translation_set
     - googleanalytics_visibility_pages
     - googleanalytics_visibility_roles
+  source_module: googleanalytics
 process:
   account: googleanalytics_account
+  premium: googleanalytics_premium
   cache: googleanalytics_cache
   'codesnippet/after': googleanalytics_codesnippet_after
   'codesnippet/before': googleanalytics_codesnippet_before
