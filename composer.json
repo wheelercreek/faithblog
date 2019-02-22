@@ -9,7 +9,7 @@
         "drupal/core": "^8.6",
         "drush/drush": "^9.2",
         "drupal/admin_toolbar": "*",
-        "drupal/metatag": "*",
+        "drupal/metatag": "^1.8",
 	"drupal/google_analytics": "*",
 	"drupal/token": "*"
     },
